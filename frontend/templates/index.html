@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartPrice — India's Price Comparison Engine</title>
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<!-- Background -->
+<div class="bg-wrap">
+  <div class="bg-grid"></div>
+  <div class="bg-glow g1"></div>
+  <div class="bg-glow g2"></div>
+  <div class="bg-glow g3"></div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2L13.5 8.5H20.5L14.5 12.5L16.5 19L11 15L5.5 19L7.5 12.5L1.5 8.5H8.5L11 2Z" fill="currentColor"/></svg>
+      </div>
+      <span>SmartPrice</span>
+    </div>
+    <div class="nav-tabs">
+      <button class="ntab active" onclick="switchTab('search')" data-tab="search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Search
+      </button>
+      <button class="ntab" onclick="switchTab('link')" data-tab="link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        Link Compare
+      </button>
+      <button class="ntab" onclick="switchTab('saved')" data-tab="saved">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Saved
+        <span class="saved-count" id="savedCount" style="display:none">0</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge">
+      <span class="live-dot"></span>
+      Live across Amazon · Flipkart · Meesho · Croma
+    </div>
+    <h1 class="hero-h1">Stop Overpaying.<br><em>Find the Best Price.</em></h1>
+    <p class="hero-sub">Search any product or paste a link — we compare prices in real time across India's top stores.</p>
+
+    <!-- SEARCH TAB -->
+    <div id="tab-search" class="tab-panel active">
+      <div class="search-box">
+        <div class="sbox-inner">
+          <svg class="sbox-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input id="keywordInput" class="sbox-input" type="text"
+            placeholder="Search iPhone 15, Samsung TV, MacBook Air…" autocomplete="off"/>
+          <button class="sbox-btn" onclick="doKeywordSearch()">
+            Compare Prices
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+        <div class="chips">
+          <button class="chip" onclick="quickSearch('iPhone 15 128GB')">📱 iPhone 15</button>
+          <button class="chip" onclick="quickSearch('Samsung Galaxy S24')">📲 Galaxy S24</button>
+          <button class="chip" onclick="quickSearch('MacBook Air M3')">💻 MacBook Air M3</button>
+          <button class="chip" onclick="quickSearch('OnePlus 12 256GB')">🔥 OnePlus 12</button>
+          <button class="chip" onclick="quickSearch('Sony WH-1000XM5')">🎧 Sony XM5</button>
+          <button class="chip" onclick="quickSearch('Samsung 55 inch 4K TV')">📺 Samsung 4k TV</button>
+          <button class="chip" onclick="quickSearch('Samsung 44 inch 3K TV')">📺 Samsung  3k TV</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LINK TAB -->
+    <div id="tab-link" class="tab-panel">
+      <div class="search-box link-box">
+        <div class="link-header">
+          <div class="link-icon">🔗</div>
+          <div>
+            <div class="link-title">Paste any product link</div>
+            <div class="link-desc">We'll detect the product and find you the best price across all stores</div>
+          </div>
+        </div>
+        <div class="sbox-inner">
+          <svg class="sbox-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <input id="linkInput" class="sbox-input" type="url"
+            placeholder="https://www.amazon.in/dp/… or flipkart.com/…" autocomplete="off"/>
+          <button class="sbox-btn btn-link" onclick="doLinkCompare()">
+            Find Best Price
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+        <div class="store-pills">
+          <span class="spill spill-amz">amazon</span>
+          <span class="spill spill-fk">flipkart</span>
+          <span class="spill spill-ms">meesho</span>
+          <span class="spill spill-cr">croma</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SAVED TAB -->
+    <div id="tab-saved" class="tab-panel">
+      <div class="search-box">
+        <div id="savedList"></div>
+        <div id="savedEmpty" class="empty-saved">
+          <span class="empty-icon">🤍</span>
+          <span>No saved products yet — tap the heart icon on any result.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="results-area" id="resultsArea" style="display:none">
+  <div class="container">
+
+    <!-- Loading -->
+    <div id="loadingState" class="loading-wrap" style="display:none">
+      <div class="loading-ring"></div>
+      <div class="loading-label">Scanning stores…</div>
+      <div class="loading-stores">
+        <span id="ls-amazon"  class="ls">Amazon</span>
+        <span id="ls-flipkart" class="ls">Flipkart</span>
+        <span id="ls-meesho"  class="ls">Meesho</span>
+        <span id="ls-croma"   class="ls">Croma</span>
+      </div>
+    </div>
+
+    <!-- Error -->
+    <div id="errorState" class="error-wrap" style="display:none">
+      <div class="error-icon">⚠️</div>
+      <div class="error-msg" id="errorMsg">Something went wrong. Please try again.</div>
+      <button class="retry-btn" onclick="hideError()">Try Again</button>
+    </div>
+
+    <!-- Winner Banner -->
+    <div id="winnerBanner" class="winner-banner" style="display:none">
+      <div class="winner-left">
+        <div class="winner-crown">👑 Best Price Found</div>
+        <div class="winner-store" id="winnerStore">Amazon</div>
+        <div class="winner-price" id="winnerPrice">₹72,999</div>
+        <div class="winner-save" id="winnerSave"></div>
+      </div>
+      <a id="winnerBtn" href="#" target="_blank" rel="noopener" class="winner-buy">
+        Buy Now — Best Deal ↗
+      </a>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="stats-row" id="statsRow" style="display:none">
+      <div class="stat-pill">
+        <span class="stat-num" id="sStores">—</span>
+        <span class="stat-label">Stores</span>
+      </div>
+      <div class="stat-pill accent-pill">
+        <span class="stat-num" id="sSavings">—</span>
+        <span class="stat-label">Max Savings</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-num" id="sBest">—</span>
+        <span class="stat-label">Best Deal</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-num" id="sTime">—</span>
+        <span class="stat-label">Scan Time</span>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls" id="controls" style="display:none">
+      <div class="filter-row" id="filterRow">
+        <button class="ftab active" data-store="all">All Stores</button>
+        <button class="ftab" data-store="amazon">Amazon</button>
+        <button class="ftab" data-store="flipkart">Flipkart</button>
+        <button class="ftab" data-store="meesho">Meesho</button>
+        <button class="ftab" data-store="croma">Croma</button>
+      </div>
+      <select class="sort-sel" id="sortSelect" onchange="applySortFilter()">
+        <option value="price-asc">Price: Low → High</option>
+        <option value="price-desc">Price: High → Low</option>
+        <option value="discount">Best Discount</option>
+        <option value="rating">Highest Rated</option>
+      </select>
+    </div>
+
+    <!-- Price comparison chart -->
+    <div id="priceChart" class="price-chart" style="display:none">
+      <div class="chart-title">Price Comparison</div>
+      <div class="chart-bars" id="chartBars"></div>
+    </div>
+
+    <!-- Source product (link compare) -->
+    <div id="sourceWrap" style="display:none">
+      <div class="source-header">📌 Product from your link</div>
+      <div id="sourceCard"></div>
+      <div class="source-divider">↓ Comparing prices across all stores</div>
+    </div>
+
+    <!-- Results Grid -->
+    <div class="results-grid" id="resultsGrid"></div>
+
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="logo">
+        <div class="logo-mark"><svg width="16" height="16" viewBox="0 0 22 22" fill="none"><path d="M11 2L13.5 8.5H20.5L14.5 12.5L16.5 19L11 15L5.5 19L7.5 12.5L1.5 8.5H8.5L11 2Z" fill="currentColor"/></svg></div>
+        <span>SmartPrice</span>
+      </div>
+      <div class="footer-note">Prices refresh every 15 minutes · Not affiliated with any store · Data may vary</div>
+    </div>
+  </div>
+</footer>
+
+<script src="/static/js/app.js"></script>
+</body>
+</html>
