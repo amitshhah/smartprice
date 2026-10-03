@@ -8,7 +8,7 @@ from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 
 
-from dispatcher import ProductDispatcher
+from backend.dispatcher import ProductDispatcher
 from backend.link_parser import parse_product_link
 from backend.cache.price_cache import PriceCache
 
